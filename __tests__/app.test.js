@@ -3,6 +3,8 @@ const app = require('../app');
 const db= require('../db/connection');
 const seed = require('../db/seeds/seed');
 const data = require('../db/data/test-data');
+const endpointsData = require('../endpoints.json')
+
 
 afterAll(()=>{
     return db.end();
@@ -33,7 +35,7 @@ describe('GET /api/topics',()=>{
     })
 
 
-    test.only ('404:responds with a not found message to a request to non existing endpoint', ()=>{
+    test ('404:responds with a not found message to a request to non existing endpoint', ()=>{
         return request(app)
         .get('/api/notARoute')
         .expect(404)
@@ -46,4 +48,20 @@ describe('GET /api/topics',()=>{
         })
     })
 })
+
+describe('GET /api',()=>{
+    test ('200:responds with an object describing all the available endpoints on my API', ()=>{
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({body})=>{
+            const {endpoints}=body;
+            expect(endpoints).toEqual(endpointsData)
+  
+    })
+
+    })
+
+})
+
 
