@@ -1,6 +1,6 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+NOTE: in order for you to be able to work with this project you need environment variables. You have to install <nmp i dotenv> and create two files each one for a separate db (one for dev and one for testing). Use the format ".env.test.js/.env.development.js" and add the database as per the example you will be able to see once  dotenv is installed. Once you do that, add the env files to gitignore.  You can now successfully connect to the two databases locally.
 
 
 
