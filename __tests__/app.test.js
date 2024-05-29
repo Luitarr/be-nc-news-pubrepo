@@ -33,15 +33,35 @@ describe('GET /api/topics',()=>{
     })
 
 
-    test ('404:responds with a not found message to a request to non existing endpoint', ()=>{
+    test.only ('404:responds with a not found message to a request to non existing endpoint', ()=>{
         return request(app)
         .get('/api/notARoute')
         .expect(404)
         .then(({body})=>{
+         
             const {msg}=body;
-            console.log(body)
+            //console.log(msg)
             expect(msg).toBe('route not found')
                
+        })
+    })
+})
+
+describe('GET /api',()=>{
+    test ('200:responds with an objects describing all the available endpoints', ()=>{
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({body})=>{
+            const {topics}=body;
+            console.log(body)
+            expect(topics).toHaveLength(3);
+            topics.forEach((topic)=>{
+                expect(topic).toMatchObject({
+                    description:expect.any(String),
+                    slug: expect.any(String),
+                })
+            })
         })
     })
 })
