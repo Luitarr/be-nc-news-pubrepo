@@ -8,11 +8,15 @@ const{getApi}= require('./controllers/api.controller')
 
 const{getArticleById}= require('./controllers/articles.controller')
 
+const{getArticles}= require('./controllers/articlesSortedByDate.controller')
+
 app.get("/api/topics", getTopic);
 
 app.get("/api", getApi);
 
 app.get('/api/articles/:article_id', getArticleById);
+
+app.get('/api/articles', getArticles);
 
 
 
