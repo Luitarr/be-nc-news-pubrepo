@@ -114,7 +114,7 @@ describe('GET /api/articles/:article_id',()=>{
             .get('/api/articles')
             .expect(200)
             .then(({body})=>{
-                console.log(body)
+                
                 const {articles}=body;
                 expect(articles).toBeSortedBy('created_at',{descending: true})
                 expect(articles).toHaveLength(13);
@@ -132,6 +132,60 @@ describe('GET /api/articles/:article_id',()=>{
                 })
             })
         })
+
+        
     })
+
+    describe('GET /api/articles/:article_id/comments',()=>{
+        test ('200:responds with an array of comments for the given article_id ', ()=>{
+            return request(app)
+            .get('/api/articles/1/comments')
+            .expect(200)
+            .then(({body})=>{
+                const {comments}=body;
+                expect(comments).toBeSortedBy('created_at',{descending: true})
+                expect(comments).toHaveLength(11)
+               comments.forEach((comment)=>{
+                expect(comment).toMatchObject({
+                    comment_id:expect.any(Number),
+                    votes: expect.any(Number),
+                    article_id: expect.any(Number),
+                    author: expect.any(String),
+                    body: expect.any(String),
+                    created_at: expect.any(String),
+                })
+               })
+
+          
+        
+            })
+
+            })
+    
+
+        
+            test ('400 Error:responds with an error when id is an invalid type', ()=>{
+                return request(app)
+                .get('/api/articles/nonsense/comments')
+                .expect(400)
+                .then(({body})=>{
+                   expect(body.msg).toBe('bad request')
+                    
+                 })
+})
+
+test ('404 Error:responds with an error when id is a valid type but an invalid value', ()=>{
+    return request(app)
+    .get('/api/articles/999/comments')
+    .expect(404)
+    .then(({body})=>{
+       expect(body.msg).toBe('not found')
+        
+     })
+})
+    })
+
+
+
 
 
