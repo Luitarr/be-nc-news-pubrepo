@@ -1,5 +1,6 @@
 const express = require ('express')
 const app = express()
+app.use(express.json())
 
 
 const{getTopic}=require('./controllers/topics.controller')
@@ -10,6 +11,7 @@ const{getArticleById}= require('./controllers/articles.controller')
 
 const{getArticles}= require('./controllers/articlesSortedByDate.controller')
 const{getComments}= require('./controllers/commentsByArtId.controller')
+const{postComment}=require('./controllers/postComment.controller')
 
 app.get("/api/topics", getTopic);
 
@@ -22,7 +24,7 @@ app.get('/api/articles', getArticles);
 app.get('/api/articles/:article_id/comments', getComments)
 
 
-
+app.post('/api/articles/:article_id/comments', postComment)
 
 
 app.all('*',(req,res)=>{  //as per NC notes error handling
@@ -41,7 +43,7 @@ app.use((err,req,res,next)=>{   //error 400
 })
 
 app.use((err,req,res,next)=>{   //custom
-    if(err.msg){
+    if(err.status && err.msg){
         res.status(err.status).send({msg:err.msg})
         
     }else{
