@@ -186,6 +186,78 @@ test ('404 Error:responds with an error when id is a valid type but an invalid v
     })
 
 
+    describe('POST /api/articles/:article_id/comments',()=>{
+        test ('201:responds with posted comment', ()=>{
+            const newComment = {
+                author: 'icellusedkars',
+                body: "The owls are not what they seem."
+              };
+          
+            return request(app)
+            .post('/api/articles/9/comments')
+            .send(newComment)
+         
+            .expect(201)
+            .then(({body})=>{
+                const {comments}=body;
+           
+               
+                expect(comments).toEqual
+                ({
+                 
+                    author: 'icellusedkars',
+                    body: "The owls are not what they seem.",
+                  
+                })
+               })
+
+          
+        
+            })
+
+            test ('404:responds with an error msg when article_id is not found', ()=>{
+                const newComment = {
+                    author: 'icellusedkars',
+                    body: "The owls are not what they seem."
+                  };
+              
+                return request(app)
+                .post('/api/articles/999/comments')
+                .send(newComment)
+             
+                .expect(404)
+                .then(({body})=>{
+               
+                 expect(body.msg).toBe("not found")
+               
+           })
+        })
+
+        test ('400:responds with an error msg when required fields are incomplete', ()=>{
+            const newComment = {
+                author: 'icellusedkars'
+                
+              };
+          
+            return request(app)
+            .post('/api/articles/9/comments')
+            .send(newComment)
+         
+            .expect(400)
+            .then(({body})=>{
+         
+             expect(body.msg).toBe("bad request")
+           
+         })
+       })
+     })
+
+
+    
+
+
+
+
 
 
 
