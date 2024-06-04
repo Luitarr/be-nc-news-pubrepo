@@ -250,6 +250,40 @@ test ('404 Error:responds with an error when id is a valid type but an invalid v
            
          })
        })
+
+       test ('400 Error:responds with an error when id is a valid type but an invalid value', ()=>{
+        const newComment = {
+            author: 'icellusedkars',
+            body: "The owls are not what they seem."
+          };
+        return request(app)
+        .post('/api/articles/banana/comments')
+        .send(newComment)
+        .expect(400)
+        .then(({body})=>{
+           expect(body.msg).toBe('bad request')
+            
+         })
+    })
+    test ('404:responds with an error msg when username does not exist', ()=>{
+        const newComment = {
+            author: 'banana',
+            body: "The owls are not what they seem."
+          };
+      
+        return request(app)
+        .post('/api/articles/9/comments')
+        .send(newComment)
+     
+        .expect(404)
+        .then(({body})=>{
+       
+         expect(body.msg).toBe("username not found")
+       
+   })
+})
+
+     
      })
 
 
