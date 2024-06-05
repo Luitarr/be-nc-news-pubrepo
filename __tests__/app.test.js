@@ -286,6 +286,68 @@ test ('404 Error:responds with an error when id is a valid type but an invalid v
      
      })
 
+     describe('PATCH /api/articles/:article_id',()=>{
+        test ('200:responds with a modified article', ()=>{
+            const newVote=1
+            const newPatch={inc_votes: newVote}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(newPatch)
+            .expect(200)
+            .then(({body})=>{
+                expect(body.article).toMatchObject({
+                    title:"Living in the shadow of a great man",
+                    topic: "mitch",
+                    author: "butter_bridge",
+                    body:"I find this existence challenging",
+                    votes:101,
+                    created_at: expect.any(String),
+                    article_img_url:
+                    "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+                })
+            }) 
+        })
+
+        test ('400:responds with an error message for invalid id type', ()=>{
+            const newVote=1
+            const newPatch={inc_votes: newVote}
+            return request(app)
+            .patch('/api/articles/banana')
+            .send(newPatch)
+            .expect(400)
+            .then(({body})=>{
+                expect(body.msg).toBe('bad request')
+                
+                
+            }) 
+        })
+
+        test ('404:responds with an error message for id not found', ()=>{
+            const newVote=1
+            const newPatch={inc_votes: newVote}
+            return request(app)
+            .patch('/api/articles/999')
+            .send(newPatch)
+            .expect(404)
+            .then(({body})=>{
+                expect(body.msg).toBe('not found')
+            }) 
+        })
+
+        test ('400:responds with an error message for an incorrect body', ()=>{
+            const newVote="1"
+            const newPatch={inc_votes: newVote}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(newPatch)
+            .expect(400)
+            .then(({body})=>{
+                expect(body.msg).toBe('bad request')
+            }) 
+        })
+    
+    })
+
 
     
 
