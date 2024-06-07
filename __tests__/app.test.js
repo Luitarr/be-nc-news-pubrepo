@@ -345,6 +345,36 @@ test ('404 Error:responds with an error when id is a valid type but an invalid v
                 expect(body.msg).toBe('bad request')
             }) 
         })
+
+      
+    })
+
+    describe('DELETE /api/comments/:comment_id',()=>{
+        test.only('204: responds with no content when comment is deleted', () => {
+            return request(app)
+                .delete('/api/comments/1')
+                .expect(204);
+               
+          
+               
+        });
+        test.only('404: responds with an error message when comment_id does not exist', () => {
+            return request(app)
+                .delete('/api/comments/9999')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('comment not found');
+                });
+        });
+    
+        test.only('400: responds with an error message when comment_id is invalid', () => {
+            return request(app)
+                .delete('/api/comments/banana')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('bad request');
+                });
+        });
     
     })
 
