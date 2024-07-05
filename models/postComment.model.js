@@ -17,7 +17,7 @@ exports.addComment = (article_id, author, body) => {
         } else{
             return db.query( `INSERT INTO comments (article_id, author, body)
     VALUES ($1, $2, $3)
-    RETURNING author, body;`,  // here I was returning *
+    RETURNING *;`,  // here I was returning *
     [article_id, author, body]).then(({rows})=>{
       const comments= rows[0]
         return comments

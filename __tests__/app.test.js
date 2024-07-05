@@ -203,10 +203,12 @@ test ('404 Error:responds with an error when id is a valid type but an invalid v
            
                
                 expect(comments).toEqual
-                ({
-                 
-                    author: 'icellusedkars',
-                    body: "The owls are not what they seem.",
+                ({"article_id": 9,
+        "author": "icellusedkars",
+        "body": "The owls are not what they seem.",
+     "comment_id": 19,
+      "created_at": expect.any(String),
+      "votes": 0,
                   
                 })
                })
